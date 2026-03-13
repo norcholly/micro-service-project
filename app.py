@@ -1,0 +1,28 @@
+import redis
+from flask import Flask
+
+app = Flask(__name__)
+
+# host olarak IP adresi değil, diğer mikro servisi yazıyoruz
+cache = redis.Redis(host='redis', port=6379)
+
+@app.route('/')
+def hello():
+    # ziyaret sayısını Redis'ten al ve 1 artır
+    sayac = cache.incr('ziyaret')
+    return f"""
+	<h1>Bu web sitesine {sayac} kez giris yapildi.</h1><br>
+	<p>Bu mimari, "stateless" (durumsuz) bir web servisi ile "stateful" (durumlu) bir in-memory veri <br>
+	deposunun birbirinden izole edildiği temel bir mikroservis yapısıdır. İstemciden (tarayıcıdan) gelen <br>
+	HTTP istekleri, ana makinenin (host) 8000 portuna ulaşır ve Docker Compose tarafından oluşturulan <br>
+	özel köprü ağı (bridge network) üzerinden Flask tabanlı web konteynerinin 5000 portuna yönlendirilir. <br>
+	Web servisi, uygulama durumunu (state) kendi belleğinde tutmak yerine, aynı izole ağ içinde yer alan <br>
+	ve Docker'ın dahili DNS çözünürlüğü sayesinde doğrudan servis adıyla erişebildiği Redis konteynerine <br>
+	(6379 portuna) iletir. Redis, anahtar-değer (key-value) eşleşmesindeki sayacı artırıp sonucu döndürdükten <br>
+	sonra web servisi bu veriyi işleyerek istemciye sunar. Uygulama katmanı ile veri katmanının bu şekilde <br>
+	ayrıştırılması (decoupling), web servisinin yatayda bağımsız olarak ölçeklenebilmesine (horizontal scaling) <br>
+	olanak tanır.</p>
+	"""
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
