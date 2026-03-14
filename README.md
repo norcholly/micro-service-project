@@ -1,4 +1,4 @@
-Bir CI/CD Anatomisi
+# Bir CI/CD Anatomisi: Flask ve Redis Mikroservislerini Kubernetes Üzerinde Tam Otomasyonla Canlıya Almak ve İzlemek
 
 Bu repository, manuel ve geleneksel sistem yönetimi süreçlerinin oluşturduğu darboğazları aşmak amacıyla sıfırdan tasarlanmış bir **DevOps Capstone Projesidir**. 
 
