@@ -21,13 +21,13 @@ def get_hit_count():
     retries = 5
     while True:
         try:
-	    return cache.incr('hits')
+            return cache.incr('hits')
 	except Exception as exc:
-	    if retries == 0:
+            if retries == 0:
 		raise exc
-	    retries -= 1
-	    import time
-	    time.sleep(0.5)
+            retries -= 1
+            import time
+            time.sleep(0.5)
 
 @app.route('/')
 def hello():
