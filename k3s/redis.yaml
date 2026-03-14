@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 1 # burası kesinlikle 1 olmalı
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis # yaka etiketi: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:alpine
+          ports:
+          - containerPort: 6379 # redisin çalışacağı port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis # app.py içindeki host='redis' kısmı
+spec:
+  selector:
+    app: redis # yaka etiketi: redis olan podlara istekleri gönder
+  ports:
+  - port: 6379 # python kodunun aradığı port
+    targetPort: 6379 # redisin çalışacağı port
