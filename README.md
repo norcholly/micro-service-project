@@ -33,3 +33,6 @@ Geliştirme sürecini insan hatalarından arındırmak için `Jenkinsfile` ile 4
 ### 4. Gözlemlenebilirlik ve Analitik (Prometheus & Grafana)
 Sistemi kör uçuşundan çıkarmak adına, Flask uygulamasının kalbine bir **Prometheus Exporter** entegre edilmiştir. Saniyedeki HTTP istek sayıları, gecikme süreleri (latency) ve hata oranları `/metrics` uç noktasından dışarı yayınlanır. Zaman serisi veritabanı olan Prometheus bu ham verileri toplar ve Grafana entegrasyonu sayesinde anlık, eyleme dönüştürülebilir sistem sağlığı panelleri oluşturulur.
 
+---
+
+### [https://alirfandogan.com/2026/03/15/bir-ci-cd-anatomisi-flask-ve-redis-mikroservislerini-kubernetes-uzerinde-tam-otomasyonla-canliya-almak-ve-izlemek/]([https://pages.github.com/](https://alirfandogan.com/2026/03/15/bir-ci-cd-anatomisi-flask-ve-redis-mikroservislerini-kubernetes-uzerinde-tam-otomasyonla-canliya-almak-ve-izlemek/))
