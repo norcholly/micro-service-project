@@ -22,9 +22,9 @@ def get_hit_count():
     while True:
         try:
             return cache.incr('hits')
-	except Exception as exc:
+        except Exception as exc:
             if retries == 0:
-		raise exc
+                raise exc
             retries -= 1
             import time
             time.sleep(0.5)
