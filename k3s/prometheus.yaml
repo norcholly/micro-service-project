@@ -1,0 +1,72 @@
+# bu kısımda, prometheus ayar dosyasını (prometheus.yml) imajın içine gömmek yerine
+# dışarıdan dinamik olarak enjekte etme amacımız bulunmaktadır.
+# bu sayede ayar değiştirmek istediğimizde imajı tekrardan build etmemize gerek olmaz
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s # her 15 saniyede bir tarama yapar
+
+    scrape_configs:
+      # birinci öncelik: kendi uygulamamız
+      - job_name: 'flask-uygulamasi'
+        static_configs:
+          - targets: ['flask-service:80'] # flask.yaml içindeki service adımız ve port
+
+      # ikinci öncelik: prometheus'un kendi sağlığı
+      - job_name: 'prometheus-kendi-metrikleri'
+        static_configs:
+          - targets: ['localhost:9090']
+
+---
+# bu kısımda prometheus konteynerini ayağa kaldırmak ve çökmesi durumunda kubernetesin
+# onu tekrar başlatmasını sağlama amacımız bulunmaktadır.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-deployment
+spec:
+  replicas: 1 # bir adet yeterli
+  selector:
+    matchLabels:
+      app: prometheus # yaka etiketi: prometheus olan podları yönetecektir
+  template:
+    metadata:
+      labels:
+        app: prometheus # her bir poda atanan yaka etiketi
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest # resmi imaj
+          ports:
+            - containerPort: 9090 # prometheus konteyner içinde bu porttan dinleme yapmaktadır
+          volumeMounts:
+            - name: config-volume # yukarıdaki configmap'i konteynerin içindeki ilgili dosya yoluna mount etmektedir
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
+      volumes:
+        - name: config-volume # yukarıdaki ile aynı olmalı
+          configMap:
+            name: prometheus-config # yukarıdaki ConfigMap klasör yapılır
+
+---
+# burası, trafiği yönlendirmek için vardır.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-service
+spec:
+  type: NodePort # dışarıdan girişler için
+  selector:
+    app: prometheus # prometheus yaka etiketli pod'lara trafiği yönlendirecektir
+  ports:
+    - port: 9090 # cluster içerisindeki servislerin bu servise ulaşacağı port
+      targetPort: 9090 # trafiğin konteynere iletileceği asıl port
+      nodePort: 30090 # tarayıcı üzerinden gireceğimiz port
+

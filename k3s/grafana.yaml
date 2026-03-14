@@ -1,0 +1,35 @@
+# şimdilik kalıcı bir volume ekleme atlanmıştır. pod silinirse dashboardlar gidecektir
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-deployment
+spec:
+  replicas: 1 # bir grafana yeterlidir
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana:latest # resmi grafana imajı
+          ports:
+            - containerPort: 3000 # grafana'nın varsayılan dinleme portu
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-service
+spec:
+  type: NodePort
+  selector:
+    app: grafana
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30095 # tarayıcıdan erişeceğimiz port
