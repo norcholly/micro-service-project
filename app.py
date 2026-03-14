@@ -34,7 +34,7 @@ def hello():
     # ziyaret sayısını Redis'ten al ve 1 artır
     count = get_hit_count()
     return f"""
-	<h1>Bu web sitesine {sayac} kez giris yapildi.</h1><br>
+	<h1>Bu web sitesine {count} kez giris yapildi.</h1><br>
 	<p>Bu mimari, "stateless" (durumsuz) bir web servisi ile "stateful" (durumlu) bir in-memory veri <br>
 	deposunun birbirinden izole edildiği temel bir mikroservis yapısıdır. İstemciden (tarayıcıdan) gelen <br>
 	HTTP istekleri, ana makinenin (host) 8000 portuna ulaşır ve Docker Compose tarafından oluşturulan <br>
