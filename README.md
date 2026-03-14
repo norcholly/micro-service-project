@@ -35,4 +35,4 @@ Sistemi kör uçuşundan çıkarmak adına, Flask uygulamasının kalbine bir **
 
 ---
 
-### [https://alirfandogan.com/2026/03/15/bir-ci-cd-anatomisi-flask-ve-redis-mikroservislerini-kubernetes-uzerinde-tam-otomasyonla-canliya-almak-ve-izlemek/]([https://pages.github.com/](https://alirfandogan.com/2026/03/15/bir-ci-cd-anatomisi-flask-ve-redis-mikroservislerini-kubernetes-uzerinde-tam-otomasyonla-canliya-almak-ve-izlemek/))
+### [https://alirfandogan.com/2026/03/15/bir-ci-cd-anatomisi-flask-ve-redis-mikroservislerini-kubernetes-uzerinde-tam-otomasyonla-canliya-almak-ve-izlemek/](https://alirfandogan.com/2026/03/15/bir-ci-cd-anatomisi-flask-ve-redis-mikroservislerini-kubernetes-uzerinde-tam-otomasyonla-canliya-almak-ve-izlemek/)
