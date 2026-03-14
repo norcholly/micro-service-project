@@ -12,13 +12,13 @@ metrics = PrometheusMetrics(app)
 redis_host = os.environ.get('REDIS_HOST', 'redis')
 
 # host olarak IP adresi değil, veritabanını yazıyoruz
-cache = redis.Redis(host='redis_host', port=6379)
+cache = redis.Redis(host=redis_host, port=6379)
 
 # statik bilgi (etiket) ekleyelim
 metrics.info('app_info', 'Mikro Servis Projesi', version='1.0.0')
 
 def get_hit_count():
-    retries: 5
+    retries = 5
     while True:
         try:
 	    return cache.incr('hits')
@@ -32,7 +32,7 @@ def get_hit_count():
 @app.route('/')
 def hello():
     # ziyaret sayısını Redis'ten al ve 1 artır
-    count sayac = get_hit_count()
+    count = get_hit_count()
     return f"""
 	<h1>Bu web sitesine {sayac} kez giris yapildi.</h1><br>
 	<p>Bu mimari, "stateless" (durumsuz) bir web servisi ile "stateful" (durumlu) bir in-memory veri <br>
